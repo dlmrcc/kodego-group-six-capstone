@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css';
+import Login from "./UserManagement/login";
 
 import { ArrowRight } from 'react-feather';
 import { FaTwitter, FaFacebook, FaGithub, FaSearch, FaRegHeart, FaUser, FaSignOutAlt, FaSignInAlt} from 'react-icons/fa';
@@ -14,13 +15,15 @@ function App() {
 
   return (
     <>
-  <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+     <Login />
+  {/* <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
       <li class="ms-3"><a class="text-muted" href="https://twitter.com"><FaTwitter size={25} /></a></li>
       <li class="ms-3"><a class="text-muted" href="https://facebook.com"><FaFacebook size={25} /></a></li>
       <li class="ms-3"><a class="text-muted" href="https://github.com"><FaGithub size={25} /></a></li>
     </ul>
 
     <button>
+   
       <ArrowRight />
       Click me
     </button>
@@ -59,7 +62,7 @@ function App() {
           </select>
         </div>
       </div>
-    </div>
+    </div> */}
     </>
   
   )
