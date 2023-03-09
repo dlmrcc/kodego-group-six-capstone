@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 } */
+
+.login{
+  /*
+    background: url('https://tailwindadmin.netlify.app/dist/images/login-new.jpeg');
+  */
+  background: url('./cover.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
