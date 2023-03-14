@@ -1,70 +1,46 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css';
-
-import { ArrowRight } from 'react-feather';
-import { FaTwitter, FaFacebook, FaGithub, FaSearch, FaRegHeart, FaUser, FaSignOutAlt, FaSignInAlt} from 'react-icons/fa';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faCoffee } from '@fortawesome/free-solid-svg-icons';
-
-
+import useState from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  
 
   return (
-    <>
-  <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-      <li class="ms-3"><a class="text-muted" href="https://twitter.com"><FaTwitter size={25} /></a></li>
-      <li class="ms-3"><a class="text-muted" href="https://facebook.com"><FaFacebook size={25} /></a></li>
-      <li class="ms-3"><a class="text-muted" href="https://github.com"><FaGithub size={25} /></a></li>
-    </ul>
-
-    <button>
-      <ArrowRight />
-      Click me
-    </button>
-
-    <h6 className="">
-    Hello world!
-  </h6>
-  
-    <div>
-      <label htmlFor="price" className="block text-sm font-medium leading-6 text-gray-900">
-        Price
-      </label>
-      <div className="relative mt-2 rounded-md shadow-sm">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <span className="text-gray-500 sm:text-sm">$</span>
+    <div className="flex justify-center items-center h-screen">
+      <div className="bg-white rounded-lg shadow-md p-4 w-500 h-1000">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-medium">Action list</h3>
+          <button className="hover:text-gray-600">
+            <svg
+              className="w-6 h-6 fill-current text-gray-500 hover:text-gray-600 transition-colors duration-200"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 10.586l4.95-4.95a1 1 0 1 1 1.414 1.414L13.414 12l4.95 4.95a1 1 0 1 1-1.414 1.414L12 13.414l-4.95 4.95a1 1 0 1 1-1.414-1.414L10.586 12 5.636 7.05A1 1 0 0 1 7.05 5.636L12 10.586z" />
+            </svg>
+          </button>
         </div>
-        <input
-          type="text"
-          name="price"
-          id="price"
-          className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-          placeholder="0.00"
-        />
-        <div className="absolute inset-y-0 right-0 flex items-center">
-          <label htmlFor="currency" className="sr-only">
-            Currency
-          </label>
-          <select
-            id="currency"
-            name="currency"
-            className="h-full rounded-md border-0 bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-          >
-            <option>USD</option>
-            <option>CAD</option>
-            <option>EUR</option>
-          </select>
+        <div>
+          <input
+            type="text"
+            placeholder="Action name"
+            className="w-full border border-gray-300 rounded-md py-2 px-3 mb-4 text-sm"
+          />
+          <div className="flex justify-end">
+            <button
+              className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 text-sm hover:bg-red-600"
+            >
+              Add new
+            </button>
+            <button
+              className="px-3 py-1 bg-gray-300 text-gray-700 rounded-md text-sm hover:bg-gray-400"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    </>
-  
-  )
+  );
 }
 
-export default App
-
-
+export default App;
