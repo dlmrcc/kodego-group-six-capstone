@@ -1,0 +1,46 @@
+// Index1.jsx
+import React from 'react';
+import Index2 from './Index2';
+
+function Index1() {
+  const name = "del";
+  return (
+    <div>
+      <Index2 name={name} />
+    </div>
+  );
+}
+
+export default Index1;
+
+// Index2.jsx
+import React from 'react';
+
+function Index2(props) {
+  return (
+    <div>
+      <p>My name is {props.name}</p>
+    </div>
+  );
+}
+
+export default Index2;
+
+
+
+
+
+import React from 'react';
+
+function MyComponent(props) {
+  const name = props.name;
+  const initial = name.charAt(0);
+
+  return (
+    <div>
+      <p>The initial of the name is: {initial}</p>
+    </div>
+  );
+}
+
+export default MyComponent;

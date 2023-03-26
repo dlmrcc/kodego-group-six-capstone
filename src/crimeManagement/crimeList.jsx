@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react';
-import Select from 'react-select';
 
-import { AddCellAPI, DeleteCellAPI, GetCellListAPI, UpdateCellAPI } from '../Utils/API/cellMangement';
-import { GetPrisonListAPI } from '../Utils/API/prisonManagement';
+import { AddCrimeAPI, DeleteCrimeAPI, GetCrimeListAPI, UpdateCrimeAPI } from '../Utils/API/crimeManagement';
 import { formatString } from '../Utils/const';
 
 
 
-export default function CellManagement() {
+function CrimeList () {
 
-  const [selectedValue, setSelectedValue] = useState(null);
-  const [cellStatus, setCellStatus] = useState(1);
+  const [crimeStatus, setCrimeStatus] = useState(1);
   const [showAddForm, setShowAddForm] = useState(false);
-  const [cellList, setCellList] = useState([]);
-  const [prisonList, setPrisonList] = useState([]);
+  const [crimeList, setCrimeList] = useState([]);
   const [addButton, setAddButton] = useState("Save")
   const [inputValue, setInputValue] = useState("");
   const [idUpdate, setIdUpdate] = useState();
@@ -22,46 +18,24 @@ export default function CellManagement() {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
-  //Load the cell list to table
+  //Load the crime list to table
   const fetchData = () => {
-    GetCellListAPI(cellStatus)
+    GetCrimeListAPI(crimeStatus)
       .then((result) => {
         console.log(result)
         return result.json()
       })
       .then((result) => {
-        console.log(JSON.stringify(result.cellList))
-        setCellList(result.cellList)
+        console.log(JSON.stringify(result.crimeList))
+        setCrimeList(result.crimeList)
       })
       .catch(error => {
         console.log('error: ', error)
       })
   }
-
-  const options = prisonList.map(prison => ({
-    label: prison.name,
-    value: prison.id
-  }));
-  const fetchPrison = () => {
-    GetPrisonListAPI(cellStatus)
-      .then((result) => {
-        console.log(result)
-        return result.json()
-      })
-      .then((result) => {
-        console.log(JSON.stringify(result.prisonList))
-        setPrisonList(result.prisonList)
-      })
-      .catch(error => {
-        console.log('error: ', error)
-      })
-  }
-
-
 
   useEffect(() => {
     fetchData();
-    fetchPrison();
   }, []);
 
   const handleAddNewButton = () => {
@@ -72,17 +46,16 @@ export default function CellManagement() {
   }
 
   const handleSaveButton = () => {
-    const name = formatString(document.getElementById('cellName').value)
-    const prisonName = document.getElementById('prisonName').value
-    
+    const name = formatString(document.getElementById('crimeName').value)
     if (addButton === "Save") {
       //Save New API
-      if (name == '' ||  selectedValue==null) {
-        alert(`The ${name === '' ? 'cell name' : ''}${selectedValue === null &&  name === ''?' and ' : ''}${selectedValue === null ? 'prison name' : ''} field${selectedValue === null &&  name === ''?' are' : 'is'} empty.`);
+      if (name == '') {
+        alert("The crime name field is empty.")
       }
       else {
-        console.log(selectedValue.id)
-        AddCellAPI(name, selectedValue.value)
+
+
+        AddCrimeAPI(name)
           .then((result) => {
             return result.json();
           })
@@ -91,13 +64,14 @@ export default function CellManagement() {
               alert(result.message)
             }
             else {
-              alert("Succesfully added new cell")
+              alert("Succesfully added new crime")
               setShowAddForm(false)
               fetchData();
             }
           })
           .catch((error) => {
             console.log(error);
+
           });
       }
 
@@ -105,12 +79,12 @@ export default function CellManagement() {
     else if (addButton === "Update") {
       //Update API
       if (name == '') {
-        alert("The cell name field is empty.")
+        alert("The crime name field is empty.")
       }
       else {
         console.log(name);
        
-        UpdateCellAPI(name, idUpdate)
+        UpdateCrimeAPI(name, idUpdate)
           .then((result) => {
             return result.json();
           })
@@ -119,7 +93,7 @@ export default function CellManagement() {
               alert(result.message)
             }
             else {
-              alert("Succesfully update the cell")
+              alert("Succesfully update the crime")
               setShowAddForm(false)
               fetchData();
             }
@@ -149,15 +123,15 @@ export default function CellManagement() {
 
   
 
-  //handle to delete the cell
+  //handle to delete the crime
   const handleDelete = (id) => {
     setShowAddForm(false)
     const confirmation = window.confirm("Are you sure you want to delete this item? This action cannot be undone.");
     if (confirmation) {
 
-      setCellList(cellList.filter((item) => item.id !== id));
+      setCrimeList(crimeList.filter((item) => item.id !== id));
 
-      DeleteCellAPI(id)
+      DeleteCrimeAPI(id)
         .then((result) => {
           if (!result.ok) {
             throw new Error("Network response was not ok");
@@ -176,17 +150,13 @@ export default function CellManagement() {
 
     }
   };
-
-  const handleSelectChange = (selectedOption) => {
-    setSelectedValue(selectedOption);
-  };
   return (
 
     <div className="flex justify-center items-center ">
       <div className="bg-white rounded-lg shadow-md p-4 mt-6 mb-5 ">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-medium flex items-center">
-            Cell Management
+            Crime Management
             <div className="bg-green-500 text-white rounded-md px-0 py-0 ml-2 hover:bg-green-600 text-sm outline-none" onClick={() => handleAddNewButton()}>
               <svg
                 className="w-5 h-5 fill-current "
@@ -217,33 +187,17 @@ export default function CellManagement() {
           <div>
             <hr className="mb-3" />
             <div className="mr-0 flex ">
-              <label className="whitespace-nowrap text-sm pr-4 mt-2 mr-4">Cell Name </label>
+              <label className="whitespace-nowrap text-sm pr-4 mt-2">Crime Name</label>
 
               <input
-                id="cellName"
+                id="crimeName"
                 type="text"
-                placeholder="Type here new cell name"
+                placeholder="Type here new crime name"
                 value={inputValue}
-                className="w-full border border-gray-300 rounded-md pl-4 pr-4 py-2 text-sm "
+                className="w-full border border-gray-300 rounded-md pl-4 pr-4 py-2 text-sm focus:outline-red"
                 onChange={handleInputChange}
               />
             </div>
-    <div className="mr-0 mt-2 flex">
-      <label className="whitespace-nowrap text-sm pr-4 mt-2">Prison Name</label>
-      <Select
-       id="prisonName"
-       options={options}
-       isSearchable={false}
-       value={selectedValue}
-       onChange={handleSelectChange}
-        className="w-full border border-gray-100 rounded-md pl-0 pr-0 py-0 text-sm"
-      />
-    
-    </div>
-    <div className="mt-2">
-      
-        Selected Prison: {selectedValue.label} (ID: {selectedValue.value})
-      </div>
             <div className="flex justify-end mt-2 mb-2">
               <button
                 className="px-5 py-1  bg-blue-600 text-white rounded-md mr-2 text-sm hover:bg-blue-700"
@@ -257,31 +211,29 @@ export default function CellManagement() {
               >
                 Cancel
               </button>
-     </div>
+            </div>
           </div>
         )}
 
         <hr />
         <div className="flex justify-between items-center mt-2 mb-4">
-          <h2 className="font-medium">List of Cell</h2>
+          <h2 className="font-medium">List of Crime</h2>
         </div>
         <div>
           <table className="table-auto w-full">
             <thead>
               <tr className="bg-gray-200 text-gray-700 text-sm">
                 <th className="py-1 px-4 border-l-2">ID</th>
-                <th className="py-1 px-4" >Name of Cell</th>
-                <th className="py-1 px-4" >Prison Category</th>
+                <th className="py-1 px-4" >      Name      </th>
                 <th className="py-1 px-4">Date Created</th>
                 <th className="py-1 px-4">Date Updated</th>
                 <th className="py-1 px-4 border-r-2">Actions</th>
               </tr>
             </thead>
             <tbody style={{ overflowY: 'auto' }}>
-              {cellList.map((item) => (
+              {crimeList.map((item) => (
                 <tr id="tablerowhover" key={item.id} className="border-b">
                   <td className="py-2 px-4 text-gray-600 text-sm border-l-2">{item.id}</td>
-                  <td className="py-2 px-4 text-gray-600 text-sm border-l-2  " >{item.name}</td>
                   <td className="py-2 px-4 text-gray-600 text-sm border-l-2  " >{item.name}</td>
                   <td className="py-2 px-4 text-gray-600 text-sm border-l-2 ">{item.date_created}</td>
                   <td className="py-2 px-4 text-gray-600 text-sm border-l-2 ">{item.date_updated}</td>
@@ -335,4 +287,4 @@ export default function CellManagement() {
   );
 }
 
-
+export default CrimeList;
